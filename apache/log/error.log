@@ -1,0 +1,5 @@
+[Wed Mar 05 14:58:17 2014] [notice] Apache/2.2.22 (Ubuntu) PHP/5.3.10-1ubuntu3.10 with Suhosin-Patch configured -- resuming normal operations
+[Wed Mar 05 14:59:47 2014] [error] [client 127.0.0.1] File does not exist: /h/u15/g2/00/g2kissoo/apache/htdocs/favicon.ico
+[Wed Mar 05 14:59:47 2014] [error] [client 127.0.0.1] File does not exist: /h/u15/g2/00/g2kissoo/apache/htdocs/favicon.ico
+[Wed Mar 05 15:00:44 2014] [notice] caught SIGTERM, shutting down
+[Wed Mar 05 15:00:57 2014] [notice] Apache/2.2.22 (Ubuntu) PHP/5.3.10-1ubuntu3.10 with Suhosin-Patch configured -- resuming normal operations
