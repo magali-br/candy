@@ -20,14 +20,17 @@ class CandyStore extends CI_Controller {
     }
 
     function index() {
-    		$this->load->model('product_model');
-    		$products = $this->product_model->getAll();
-    		$data['products']=$products;
-    		//$this->load->view('product/list.php',$data);
-    		//TEMP TESttttttt!!!!
+    		//$this->productList();
 
     		$this->load->view('customer/loginForm.php');
 
+    }
+
+    function productList() {
+    		$this->load->model('product_model');
+    		$products = $this->product_model->getAll();
+    		$data['products']=$products;
+    		$this->load->view('product/list.php',$data);
     }
     
     function newForm() {

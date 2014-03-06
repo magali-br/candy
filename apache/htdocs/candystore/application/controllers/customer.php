@@ -53,20 +53,24 @@ class Customer extends CI_Controller {
         $this->form_validation->set_rules('password','Password', 'required');
 
         if ($this->form_validation->run()) {
-            $this->load->model('customer_model');
+            //$this->load->model('customer_model');
 
-            // if ( strcmp($this->input->get_post('username'), "admin") == 0
-            //     && strcmp($this->input->get_post('password'), "admin") == 0 ) {
-            //     redirect('candystore/index', 'refresh');
-            // }
+            if ( strcmp($this->input->get_post('username'), "admin") == 0
+                && strcmp($this->input->get_post('password'), "admin") == 0 ) {
+                redirect('candystore/productList');
+            }
+            else {
+                redirect('candystore/index', 'refresh');
+
+            }
         
             // else check against database
 
             //Then we redirect to the index page again
-            redirect('candystore/newForm', 'refresh');
+            //redirect('candystore/index', 'refresh');
         } else {
             
-            $this->load->view('product/newForm.php');
+            $this->load->view('product/list.php');
         }   
     }
 
