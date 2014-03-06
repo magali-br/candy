@@ -25,7 +25,9 @@ class CandyStore extends CI_Controller {
     		$data['products']=$products;
     		//$this->load->view('product/list.php',$data);
     		//TEMP TESttttttt!!!!
+
     		$this->load->view('customer/loginForm.php');
+
     }
     
     function newForm() {
