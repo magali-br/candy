@@ -5,6 +5,12 @@ class Customer_Controller extends CI_Controller {
     function __construct() {
         // Call the Controller constructor
         parent::__construct();
+        
+    	session_start();
+    	
+    	//$this->loggedIn = false;
+    	
+    	
     }
 
     function loginForm() {
@@ -13,6 +19,13 @@ class Customer_Controller extends CI_Controller {
 
     function createCustomerForm() {
 	    $this->load->view('customer/createCustomerForm.php');
+    }
+    
+    function loggedIn() {
+   		if ((isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"])) {
+    		return true;
+    	}
+    	return false;
     }
 
     function createCustomer() {
@@ -27,7 +40,7 @@ class Customer_Controller extends CI_Controller {
         $this->form_validation->set_rules('password','Password','required | min_length[5]');
         $this->form_validation->set_rules('passConf','Password Confirmation', 'required | matches[passConf]');
 
-        	//and much more!!!
+        	//and much more validation!!! valid_email does not work
 
         if ($this->form_validation->run()) {
             $this->load->model('customer_model');
@@ -58,18 +71,20 @@ class Customer_Controller extends CI_Controller {
            $this->load->model('customer_model');
             
             $login = $this->input->get_post('username');
-            $customer = $this->customer_model->getByLogin($login);
+//             $customer = $this->customer_model->getByLogin($login);
             
-            // This does not work at the moment. Work on getting into the database after next week's lectures.
-            if (strcmp($this->input->get_post('password'), $customer->password) == 0) {
-            	redirect('candystore/productList');
-            } else 
+//             // This does not work at the moment. Work on getting into the database after next week's lectures.
+//             if (strcmp($this->input->get_post('password'), $customer->password) == 0) {
+//             	redirect('candystore/productList');
+//             } else
+          if ( (strcmp($login, "admin") == 0) &&
+                (strcmp($this->input->get_post('password'), "admin") == 0) ) {
+            	$_SESSION["loggedIn"] = true;
+            	$_SESSION["login"] = $login;
+            	$_SESSION["first"] = "Admin";
             	
-            if ( (strcmp($this->input->get_post('username'), "admin") == 0)
-                && (strcmp($this->input->get_post('password'), "admin") == 0) ) {
                 redirect('candystore/productList');
-            }
-            else {
+            } else {
                 redirect('candystore/index', 'refresh');
 
             }

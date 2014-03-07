@@ -1,6 +1,19 @@
 <h2>Product Table</h2>
 <?php 
+		session_start();
+		header("Cache-Control: no-cache, must-revalidate");
 		echo "<p>" . anchor('candystore/newForm','Add New') . "</p>";
+		
+		if (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"]) {
+			
+			if (isset($_SESSION["first"])) {
+				echo "<p>Welcome to the Candy Store, " . $_SESSION["first"] . "!</p>";
+			} else {
+				echo "<p> Welcome Nameless One </p>";
+			}
+		} else {
+			//echo "<p>" . anchor('customer_controller/loginForm','Log In') . "</p>";
+		}
  	  
 		echo "<table>";
 		echo "<tr><th>Name</th><th>Description</th><th>Price</th><th>Photo</th></tr>";

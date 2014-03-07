@@ -7,6 +7,15 @@
 </style>
 
 <?php 
+
+	session_start();
+	header("Cache-Control: no-cache, must-revalidate");
+	$loggedIn = false;
+	if (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"]) {
+    		$loggedIn = true;
+    		redirect('candystore/productList', 'refresh');
+    }
+	
 	echo "<p>" . anchor('customer_controller/createCustomerForm','Create New Account') . "</p>";
 	echo "<p>Login to access the Candy Store</p>";
 
