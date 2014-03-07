@@ -55,14 +55,15 @@ class Customer_Controller extends CI_Controller {
         $this->form_validation->set_rules('password','Password', 'required');
 
         if ($this->form_validation->run()) {
-//            $this->load->model('customer_model');
+           $this->load->model('customer_model');
             
-//             $login = $this->input->get_post('username');
-//             $customer = $this->customer_model->getByLogin($login);
+            $login = $this->input->get_post('username');
+            $customer = $this->customer_model->getByLogin($login);
             
-//             if (strcmp($this->input->get_post('password'), $customer->password) == 0) {
-//             	redirect('candystore/productList');
-//             } else 
+            // This does not work at the moment. Work on getting into the database after next week's lectures.
+            if (strcmp($this->input->get_post('password'), $customer->password) == 0) {
+            	redirect('candystore/productList');
+            } else 
             	
             if ( (strcmp($this->input->get_post('username'), "admin") == 0)
                 && (strcmp($this->input->get_post('password'), "admin") == 0) ) {
@@ -70,16 +71,11 @@ class Customer_Controller extends CI_Controller {
             }
             else {
                 redirect('candystore/index', 'refresh');
-            	//redirect('candystore/productList');
 
             }
-        
-            // else check against database
 
-            //Then we redirect to the index page again
-            //redirect('candystore/index', 'refresh');
         } else {
-            $this->load->view('product/list.php');
+            redirect('candystore/index', 'refresh');
         }   
     }
 

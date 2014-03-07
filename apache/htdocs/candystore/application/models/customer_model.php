@@ -16,7 +16,7 @@ class Customer_model extends CI_Model {
 	
 	function getByLogin($login)
 	{
-		$query = $this->db->get_where('customer',array('login' => $login));
+		$query = $this->db->get_where('customer',array('login =' => '$login'));
 	
 		return $query->row(0,'Customer');
 	}
