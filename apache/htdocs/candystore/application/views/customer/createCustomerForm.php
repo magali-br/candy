@@ -6,11 +6,11 @@
 </style>
 
 <?php 
-	echo "<p>" . anchor('customer/loginForm','Back') . "</p>";
+	echo "<p>" . anchor('customer_controller/loginForm','Back') . "</p>";
 
 	echo validation_errors();
 	
-	echo form_open_multipart('customer/createCustomer');
+	echo form_open_multipart('customer_controller/createCustomer');
 		
 	echo form_label('First Name'); 
 	echo form_error('firstName');
@@ -34,10 +34,7 @@
 	
 	echo form_label('Password Confirmation');
 	echo form_error('passConf');
-	echo form_password('passConf', "", "required");
-	
-	if(isset($fileerror))
-		echo $fileerror;		
+	echo form_password('passConf', "", "required");		
 	
 	echo form_submit('submit', 'Create Account');
 	echo form_close();

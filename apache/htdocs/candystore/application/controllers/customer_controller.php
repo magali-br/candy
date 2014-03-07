@@ -1,6 +1,6 @@
 <?php
 
-class Customer extends CI_Controller {
+class Customer_Controller extends CI_Controller {
 
     function __construct() {
         // Call the Controller constructor
@@ -27,23 +27,24 @@ class Customer extends CI_Controller {
         $this->form_validation->set_rules('password','Password','required | min_length[5]');
         $this->form_validation->set_rules('passConf','Password Confirmation', 'required | matches[passConf]');
 
-        //and more!
+        	//and much more!!!
 
         if ($this->form_validation->run()) {
-            //$this->load->model('customer_model');
+            $this->load->model('customer_model');
 
-            // $customer = new Customer();
-            // $customer->first = $this->input->get_post('first');
-            // $customer->last = $this->input->get_post('last');
-            // $customer->first = $this->input->get_post('first');
+            $customer = new Customer();
+            $customer->first = $this->input->get_post('firstName');
+            $customer->last = $this->input->get_post('lastName');
+            $customer->login = $this->input->get_post('username');
+            $customer->password = $this->input->get_post('password');
+            $customer->email = $this->input->get_post('email');
 
             
-            // $this->customer_model->insert($customer);
+            $this->customer_model->insert($customer);
 
             //Then we redirect to the index page again
             redirect('candystore/productList', 'refresh');
-        }
-        else {
+        } else {
             $this->load->view('customer/createCustomerForm.php');
         }  
     }
@@ -54,14 +55,22 @@ class Customer extends CI_Controller {
         $this->form_validation->set_rules('password','Password', 'required');
 
         if ($this->form_validation->run()) {
-            //$this->load->model('customer_model');
-
-            if ( strcmp($this->input->get_post('username'), "admin") == 0
-                && strcmp($this->input->get_post('password'), "admin") == 0 ) {
+//            $this->load->model('customer_model');
+            
+//             $login = $this->input->get_post('username');
+//             $customer = $this->customer_model->getByLogin($login);
+            
+//             if (strcmp($this->input->get_post('password'), $customer->password) == 0) {
+//             	redirect('candystore/productList');
+//             } else 
+            	
+            if ( (strcmp($this->input->get_post('username'), "admin") == 0)
+                && (strcmp($this->input->get_post('password'), "admin") == 0) ) {
                 redirect('candystore/productList');
             }
             else {
                 redirect('candystore/index', 'refresh');
+            	//redirect('candystore/productList');
 
             }
         

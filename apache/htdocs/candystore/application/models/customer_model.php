@@ -14,16 +14,23 @@ class Customer_model extends CI_Model {
 		return $query->row(0,'Customer');
 	}
 	
+	function getByLogin($login)
+	{
+		$query = $this->db->get_where('customer',array('login' => $login));
+	
+		return $query->row(0,'Customer');
+	}
+	
 	function delete($id) {
 		return $this->db->delete("customer",array('id' => $id ));
 	}
 	
 	function insert($customer) {
 		return $this->db->insert("customer", array(	'first' => $customer->first,
-													'last' => $customer->last,
-				                                  	'login' => $customer->login,
-											      	'email' => $customer->email,
-											      	'password' => $customer->password);
+														'last' => $customer->last,
+				                                  		'login' => $customer->login,
+											      		'email' => $customer->email,
+											      		'password' => $customer->password));
 	}
 	
 	

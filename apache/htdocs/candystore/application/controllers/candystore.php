@@ -20,6 +20,7 @@ class CandyStore extends CI_Controller {
     }
 
     function index() {
+    		// To have it load the list of products by default
     		//$this->productList();
 
     		$this->load->view('customer/loginForm.php');
