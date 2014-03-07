@@ -7,6 +7,8 @@
 
 <?php 
 	echo "<p>" . anchor('customer/loginForm','Back') . "</p>";
+
+	echo validation_errors();
 	
 	echo form_open_multipart('customer/createCustomer');
 		

@@ -10,6 +10,8 @@
 	echo "<p>" . anchor('customer/createCustomerForm','Create New Account') . "</p>";
 	echo "<p>Login to access the Candy Store</p>";
 
+	echo validation_errors();
+
 	echo form_open_multipart('customer/login');
 
 	echo form_label('Username');
