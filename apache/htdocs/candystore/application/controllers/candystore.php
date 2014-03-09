@@ -74,6 +74,22 @@ class CandyStore extends MY_Controller {
 	}
 	
 	function read($id) {
+
+		// The following piece must be added to every administrator-secret page
+		// Secret product list, viewing/editing item/ etc...
+		// Must decide where to redirect to - login page, or error page "unauthorized"?
+		if ($this->loggedIn()) {
+			if (!($this->isAdmin())) {
+				// print error saying must be Administrator to access page
+				redirect('candystore/index', 'refresh');
+				return;
+			}
+		} else {
+			//pass data, print error saying must log in
+			redirect('customer_controller/loginForm', 'refresh');
+		}
+
+
 		$this->load->model('product_model');
 		$product = $this->product_model->get($id);
 		$data['product']=$product;

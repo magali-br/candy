@@ -12,7 +12,7 @@
 
  	public function welcome() {
 
-        if (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"]) {
+        if ($this->loggedIn()) {
             
             if (isset($_SESSION["first"])) {
                 echo "<p>Welcome to the Candy Store, " . $_SESSION["first"] . "!</p>";
@@ -24,6 +24,21 @@
             echo "<p>Welcome to the Candy Store, please log in!</p>";
             echo "<p>" . anchor('customer_controller/loginForm','Log In') . "</p>";
         }
+    }
+
+    public function loggedIn() {
+        if ((isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"])) {
+            return true;
+        }
+        return false;
+    }
+
+    public function isAdmin() {
+        if ($this->loggedIn() && isset($_SESSION["login"]) 
+                && (strcmp($_SESSION["login"], "admin") == 0)) {
+            return true;
+        }
+        return false;
     }
  }
 
