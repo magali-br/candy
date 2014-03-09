@@ -1,12 +1,11 @@
 <?php
 
-class CandyStore extends CI_Controller {
+class CandyStore extends MY_Controller {
    
      
     function __construct() {
     		// Call the Controller constructor
 	    	parent::__construct();
-	    	
 	    	
 	    	$config['upload_path'] = './images/product/';
 	    	$config['allowed_types'] = 'gif|jpg|png';
@@ -20,12 +19,13 @@ class CandyStore extends CI_Controller {
     }
 
     function index() {
-    		// Load the list of products by default
-    		$this->productList();
+    	// Load the list of products by default
+    	$this->productList();
 
     }
 
     function productList() {
+    	$this->welcome();
     		$this->load->model('product_model');
     		$products = $this->product_model->getAll();
     		$data['products']=$products;
@@ -33,6 +33,7 @@ class CandyStore extends CI_Controller {
     }
     
     function newForm() {
+    	$this->welcome();
 	    $this->load->view('product/newForm.php');
     }
     
@@ -67,6 +68,7 @@ class CandyStore extends CI_Controller {
 				return;
 			}
 			
+			$this->welcome();
 			$this->load->view('product/newForm.php');
 		}	
 	}
@@ -75,6 +77,8 @@ class CandyStore extends CI_Controller {
 		$this->load->model('product_model');
 		$product = $this->product_model->get($id);
 		$data['product']=$product;
+
+		$this->welcome();
 		$this->load->view('product/read.php',$data);
 	}
 	
@@ -82,6 +86,8 @@ class CandyStore extends CI_Controller {
 		$this->load->model('product_model');
 		$product = $this->product_model->get($id);
 		$data['product']=$product;
+
+		$this->welcome();
 		$this->load->view('product/editForm.php',$data);
 	}
 	
@@ -110,6 +116,8 @@ class CandyStore extends CI_Controller {
 			$product->description = set_value('description');
 			$product->price = set_value('price');
 			$data['product']=$product;
+
+			$this->welcome();
 			$this->load->view('product/editForm.php',$data);
 		}
 	}
