@@ -3,6 +3,12 @@
 		session_start();
 		header("Cache-Control: no-cache, must-revalidate");
 		echo "<p>" . anchor('candystore/newForm','Add New') . "</p>";
+
+		// DOES NOT WORK
+		///$this->load->controller('customer_controller');
+		//$controller = new customer_controller();
+		//$controller->welcome();
+		//$customer_controller->welcome();
 		
 		if (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"]) {
 			
@@ -11,8 +17,10 @@
 			} else {
 				echo "<p> Welcome Nameless One </p>";
 			}
+			echo "<p>" . anchor('customer_controller/logout','Log Out') . "</p>";
 		} else {
-			//echo "<p>" . anchor('customer_controller/loginForm','Log In') . "</p>";
+			echo "<p>Welcome to the Candy Store, please log in!</p>";
+			echo "<p>" . anchor('customer_controller/loginForm','Log In') . "</p>";
 		}
  	  
 		echo "<table>";
