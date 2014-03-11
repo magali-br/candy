@@ -25,16 +25,18 @@ class CandyStore extends MY_Controller {
     }
 
     function productList() {
-    	$this->welcome();
-    		$this->load->model('product_model');
-    		$products = $this->product_model->getAll();
-    		$data['products']=$products;
-    		$this->load->view('product/list.php',$data);
+    	$data['title'] = 'The Wonderful World of Candy';
+    	$data['main'] = 'product/list.php';
+    	$this->load->model('product_model');
+    	$products = $this->product_model->getAll();
+    	$data['products']=$products;
+    	$this->load->view('utils/template.php',$data);
     }
     
     function newForm() {
-    	$this->welcome();
-	    $this->load->view('product/newForm.php');
+    	$data['title'] = 'New Product';
+    	$data['main'] = 'product/newForm.php';
+	    $this->load->view('utils/template.php',$data);
     }
     
 	function create() {
@@ -64,12 +66,13 @@ class CandyStore extends MY_Controller {
 		else {
 			if ( !$fileUploadSuccess) {
 				$data['fileerror'] = $this->upload->display_errors();
-				$this->load->view('product/newForm.php',$data);
+				$data['title'] = 'New Product';
+    			$data['main'] = 'product/newForm.php';
+	    		$this->load->view('utils/template.php',$data);
 				return;
 			}
 			
-			$this->welcome();
-			$this->load->view('product/newForm.php');
+			$this->newForm();
 		}	
 	}
 	
@@ -89,13 +92,13 @@ class CandyStore extends MY_Controller {
 			redirect('customer_controller/loginForm', 'refresh');
 		}
 
-
 		$this->load->model('product_model');
 		$product = $this->product_model->get($id);
 		$data['product']=$product;
 
-		$this->welcome();
-		$this->load->view('product/read.php',$data);
+		$data['title'] = 'View Product';
+    	$data['main'] = 'product/read.php';
+	    $this->load->view('utils/template.php',$data);
 	}
 	
 	function editForm($id) {
@@ -103,8 +106,9 @@ class CandyStore extends MY_Controller {
 		$product = $this->product_model->get($id);
 		$data['product']=$product;
 
-		$this->welcome();
-		$this->load->view('product/editForm.php',$data);
+		$data['title'] = 'Edit Product';
+    	$data['main'] = 'product/editForm.php';
+	    $this->load->view('utils/template.php',$data);
 	}
 	
 	function update($id) {
@@ -133,8 +137,8 @@ class CandyStore extends MY_Controller {
 			$product->price = set_value('price');
 			$data['product']=$product;
 
-			$this->welcome();
-			$this->load->view('product/editForm.php',$data);
+			$data['title'] = 'Edit Product';
+    		$data['main'] = 'product/editForm.php';
 		}
 	}
     	

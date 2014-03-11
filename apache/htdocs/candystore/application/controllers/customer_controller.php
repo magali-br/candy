@@ -8,19 +8,15 @@ class Customer_Controller extends MY_Controller {
     }
 
     function loginForm() {
-        $this->welcome();
-    	$this->load->view('customer/loginForm.php');
+        $data['title'] = 'Login';
+        $data['main'] = 'customer/loginForm.php';
+        $this->load->view('utils/template.php',$data);
     }
 
     function createCustomerForm() {
-	    $this->load->view('customer/createCustomerForm.php');
-    }
-    
-    function loggedIn() {
-   		if ((isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"])) {
-    		return true;
-    	}
-    	return false;
+	    $data['title'] = 'New Account';
+        $data['main'] = 'customer/createCustomerForm.php';
+        $this->load->view('utils/template.php',$data);
     }
 
     function createCustomer() {
@@ -53,7 +49,9 @@ class Customer_Controller extends MY_Controller {
             //Then we redirect to the index page again
             redirect('candystore/productList', 'refresh');
         } else {
-            $this->load->view('customer/createCustomerForm.php');
+            $data['title'] = 'New Account';
+            $data['main'] = 'customer/createCustomerForm.php';
+            $this->load->view('utils/template.php',$data);
         }  
     }
 
