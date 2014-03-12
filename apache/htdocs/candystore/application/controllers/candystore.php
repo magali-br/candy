@@ -20,13 +20,23 @@ class CandyStore extends MY_Controller {
 
     function index() {
     	// Load the list of products by default
-    	$this->productList();
+    	//$this->productList();
+    	$this->storefront();
 
     }
 
     function productList() {
     	$data['title'] = 'The Wonderful World of Candy';
     	$data['main'] = 'product/list.php';
+    	$this->load->model('product_model');
+    	$products = $this->product_model->getAll();
+    	$data['products']=$products;
+    	$this->load->view('utils/template.php',$data);
+    }
+
+    function storefront() {
+    	$data['title'] = 'The Wonderful World of Candy';
+    	$data['main'] = 'store/storefront.php';
     	$this->load->model('product_model');
     	$products = $this->product_model->getAll();
     	$data['products']=$products;
