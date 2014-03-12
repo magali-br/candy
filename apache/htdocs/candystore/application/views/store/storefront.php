@@ -9,7 +9,7 @@
 			echo "<tr>";
 			echo "<td>" . $product->name . "</td>";
 			echo "</tr><tr>";
-			echo "<td><img src='" . base_url() . "images/product/" . $product->photo_url . 
+			echo "<td><a href='candystore/candyDescription/" . $product->id . "'><img src='" . base_url() . "images/product/" . $product->photo_url . 
 					"' width='100px' /></td>";
 			echo "</tr><tr>";
 			echo "<td>$" . $product->price . "</td>";

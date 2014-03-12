@@ -42,6 +42,19 @@ class CandyStore extends MY_Controller {
     	$data['products']=$products;
     	$this->load->view('utils/template.php',$data);
     }
+
+    function candyDescription($id) {
+
+		$this->load->model('product_model');
+		$product = $this->product_model->get($id);
+		$data['product']=$product;
+
+		$data['title'] = 'View Product';
+    	$data['main'] = 'store/candyDescription.php';
+	    $this->load->view('utils/template.php',$data);
+	}
+
+
     
     function newForm() {
     	$data['title'] = 'New Product';
