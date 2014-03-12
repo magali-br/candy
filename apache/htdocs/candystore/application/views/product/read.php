@@ -1,6 +1,6 @@
 <h2>Product Entry</h2>
 <?php 
-	echo "<p>" . anchor('candystore/index','Back') . "</p>";
+	echo "<p>" . anchor('candystore/productList','Back') . "</p>";
 
 	echo "<p> ID = " . $product->id . "</p>";
 	echo "<p> NAME = " . $product->name . "</p>";
