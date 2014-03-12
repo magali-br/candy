@@ -43,7 +43,7 @@ class Customer_Controller extends MY_Controller {
             $customer->password = $this->input->get_post('password');
             $customer->email = $this->input->get_post('email');
 
-            
+            // this does not work at the moment
             $this->customer_model->insert($customer);
 
             //Then we redirect to the index page again
@@ -65,28 +65,34 @@ class Customer_Controller extends MY_Controller {
             
             $login = $this->input->get_post('username');
 
-            // Check customer against the database
-//             $customer = $this->customer_model->getByLogin($login);
-            
-//             // This does not work at the moment. Work on getting into the database after next week's lectures.
-//             if (strcmp($this->input->get_post('password'), $customer->password) == 0) {
-//             	redirect('candystore/productList');
-//             } else
-          if ( (strcmp($login, "admin") == 0) &&
-                (strcmp($this->input->get_post('password'), "admin") == 0) ) {
-            	$_SESSION["loggedIn"] = true;
-            	$_SESSION["login"] = $login;
-            	$_SESSION["first"] = "Admin";
-            	
-                redirect('candystore/productList');
-            } else {
-                redirect('candystore/index', 'refresh');
+            //Check customer against the database
+            $customer = $this->customer_model->getByLogin($login);
 
+            if ($customer) {
+
+
+                if (strcmp($customer->password, $this->input->get_post('password')) == 0) {
+                    $_SESSION["loggedIn"] = true;
+                    $_SESSION["login"] = $login;
+                    $_SESSION["first"] = $customer->first;
+
+                } else if ( (strcmp($login, "admin") == 0) &&
+                    (strcmp($this->input->get_post('password'), "admin") == 0) ) {
+                	$_SESSION["loggedIn"] = true;
+                	$_SESSION["login"] = $login;
+                	$_SESSION["first"] = "Admin";
+                	
+                }
+
+            } else {
+                //error handling: no such customer
             }
 
         } else {
-            redirect('candystore/index', 'refresh');
+            // error handling
+           // redirect('candystore/index', 'refresh');
         }   
+        redirect('candystore/index', 'refresh');
     }
 
     function logout() {
@@ -94,7 +100,8 @@ class Customer_Controller extends MY_Controller {
         $_SESSION["login"] = NULL;
         $_SESSION["first"] = NULL;
         session_destroy();
-        redirect('candystore/productList');
+        $_SESSION = array();
+        redirect(base_url());
     }
 
 }

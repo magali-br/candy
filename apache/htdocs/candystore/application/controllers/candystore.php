@@ -150,7 +150,7 @@ class CandyStore extends MY_Controller {
 			$this->load->model('product_model');
 			$this->product_model->update($product);
 			//Then we redirect to the index page again
-			redirect('candystore/index', 'refresh');
+			redirect('candystore/storefront', 'refresh');
 		}
 		else {
 			$product = new Product();

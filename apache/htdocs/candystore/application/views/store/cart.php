@@ -1,5 +1,9 @@
 <?php 
-		foreach ($products as $product) {
+
+		if (isset($_SESSION["items"])) {
+            $items = $_SESSION["items"];
+        }
+		foreach ($items as $item) {
 
 			echo "<table id='candyCell'>";
 			echo "<tr>";
@@ -10,11 +14,12 @@
 					"' width='100px' /></td>";
 			echo "</tr><tr>";
 			echo "<td>$" . $product->price . "</td>";
+
+			echo "<td>Quantity: " . $item->quantity . "</td>";
 				
 			echo "</tr>";
 			echo "</tr><td> </td><tr>";
 			echo "</tr><td> </td><tr>";
 			echo "</table>";
 		}
-?>	
-
+?>	 

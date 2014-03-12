@@ -6,3 +6,5 @@ class Product  {
 	public $price;
 	public $photo_url;	
 }
+
+?>

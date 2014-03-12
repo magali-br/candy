@@ -7,3 +7,5 @@ class Customer  {
 	public $password;
 	public $email;
 }
+
+?>
