@@ -20,12 +20,10 @@
     	echo "<p>Welcome to the Candy Store, please log in!</p>";
 		echo "<p><a href='" . base_url() . "customer_controller/loginForm'>\
 				<img id='smallButton' src='" . base_url() . "images/icons/CandyLogin.png'/></p>";
-		echo "<p>" . anchor('customer_controller/loginForm','Log In') . "</p>";
 	} else {
 		echo "<p>Welcome to the Candy Store, $first!</p>";
 		echo "<p><a href='" . base_url() . "customer_controller/logout'>\
 				<img id='smallButton' src='" . base_url() . "images/icons/CandyLogout.png'/></p>";
-		echo "<p>" . anchor('customer_controller/logout','Log Out') . "</p>";
 	}
 
 
