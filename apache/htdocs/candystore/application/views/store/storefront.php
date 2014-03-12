@@ -1,11 +1,7 @@
 <?php 
- 	  
-		//echo "<table>";
-		
-
 		foreach ($products as $product) {
 
-			echo "<table id=\"candyCell\">";
+			echo "<table id='candyCell'>";
 			echo "<tr>";
 			echo "<td>" . $product->name . "</td>";
 			echo "</tr><tr>";
