@@ -8,8 +8,15 @@ class Cart_controller extends MY_Controller {
         $this->cart_items = array();
     }
 
-    function productInArray() {
-        
+    function productInArray($input_id) {
+        if (!isset($_SESSION["items"])) {
+            $_SESSION["items"] = array();
+        }
+        foreach ($_SESSION["items"] as $item) {
+            if ($item->product_id == $input_id) {
+                return $item;
+            }
+        }
     }
 
     function cart() {
@@ -49,15 +56,12 @@ class Cart_controller extends MY_Controller {
 
             $input_id = $this->input->get_post('id');
             $quantity = $this->input->get_post('quantity');
-            $updating = false;
-            foreach ($_SESSION["items"] as $item) {
-                if ($item->product_id == $input_id) {
-                    $item->quantity += $quantity;
-                    $updating = true;
-                    break;
-                }
-            }
-            if (!$updating) {
+
+
+            $item = $this->productInArray($input_id);
+            if ($item) {
+                $item->quantity += $quantity;
+            } else {
                 $order_item = new Cart_item();
                 $order_item->quantity = $this->input->get_post('quantity');
                 $order_item->product_id = $this->input->get_post('id');
@@ -99,14 +103,24 @@ class Cart_controller extends MY_Controller {
     }
 
     function remove() {
-        // remove object from cart
+        $id = $this->input->get_post('id');
+        $item = $this->productInArray($id);
+        if ($item) {
+            $index = array_search($item, $_SESSION["items"]);
 
+            array_splice($_SESSION["items"], $index, 1);
+        }
+        redirect('cart_controller/cart', 'refresh');
     }
 
     function updateQty() {
         $id = $this->input->get_post('id');
         $quantity = $this->input->get_post('quantity');
-        //update quantity of object in cart
+        $item = $this->productInArray($id);
+        if ($item) {
+            $item->quantity = $quantity;
+        }
+        redirect('cart_controller/cart', 'refresh');
     }
 
 }

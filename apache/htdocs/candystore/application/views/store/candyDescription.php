@@ -10,7 +10,8 @@
 	
 	echo form_label('Qty'); 
 	echo form_error('quantity');
-	echo form_input('quantity',set_value('quantity') ? set_value('quantity') : 0, "required");
+	echo form_input('quantity',set_value('quantity') ? set_value('quantity') : 0, 
+		"required id='smallInput'");
 
 	echo form_hidden('id', $product->id, "hidden");
 	
