@@ -76,3 +76,31 @@
     width: 100px;
     height: 100px;
  }
+
+ #productOtherCellWidth {
+    width:200px;
+    text-align: left;
+ }
+
+ #productNameWidth {
+    width: 400px;
+    text-align: left;
+ }
+
+ #right {
+    margin-right: 50px;
+    margin-left:auto;
+    text-align: right;
+ }
+
+ #left {
+    text-align: left;
+ }
+
+ #smallInput {
+    width: 20px;
+ }
+
+#mediumInput {
+    width: 30px;
+ }

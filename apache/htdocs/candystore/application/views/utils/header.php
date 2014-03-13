@@ -12,8 +12,8 @@
         } else {
             $first = "friend";
         }
-
-        if (isset($_SESSION["items"])) {
+    } 
+    if (isset($_SESSION["items"])) {
             $itemCount = count($_SESSION["items"]);
         } else {
             $itemCount = 0;
@@ -23,11 +23,12 @@
         } else {
         	$itemMessage = "items";
         }
-    } 
 
     if (!$loggedIn) {
     	echo "<p>Welcome to the Candy Store, please log in!</p>";
-		echo "<p><a href='" . base_url() . "customer_controller/loginForm'>
+		echo "<p><a href='" . base_url() . "cart_controller/cart'>
+				<img id='smallButton' src='" . base_url() . "images/icons/CandyCart.png'/></a>";
+		echo "<a href='" . base_url() . "customer_controller/loginForm'>
 				<img id='smallButton' src='" . base_url() . "images/icons/CandyLogin.png'/></a></p>";
 
 	} else {
@@ -36,13 +37,13 @@
 				<img id='smallButton' src='" . base_url() . "images/icons/CandyCart.png'/></a>";
 		echo "<a href='" . base_url() . "customer_controller/logout'>
 				<img id='smallButton' src='" . base_url() . "images/icons/CandyLogout.png'/></a></p>";
-		echo "<p>You have $itemCount $itemMessage in your cart.</p>";
 
 		if (isset($_SESSION["login"]) && (strcmp($_SESSION["login"], "admin") == 0)) {
 			echo "<p>" . anchor('candystore/productList','List of Products') . "</p>";
 		}
 
 	}
+	echo "<p>You have $itemCount $itemMessage in your cart.</p>";
 
 
 ?>
