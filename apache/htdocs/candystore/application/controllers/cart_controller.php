@@ -10,7 +10,10 @@ class Cart_controller extends MY_Controller {
     function cart() {
     	$data['title'] = 'Your Cart';
         $data['main'] = 'store/cart.php';
-        //$data['items']=$items;
+        // for each info in session items, fetch info from database? -- because might need to be updateD!!
+        //and build equivalent array of cart_items and pass them as data?
+        // if no items, redirect to "you have nothing"
+
         $this->load->view('utils/template.php',$data);
     }
 
@@ -24,7 +27,7 @@ class Cart_controller extends MY_Controller {
             $order_item->quantity = $this->input->get_post('quantity');
             $order_item->product_id = $this->input->get_post('id');
 
-            if (isset($_SESSION["items"])) {
+            if (!isset($_SESSION["items"])) {
             	$_SESSION["items"] = array();
             }
 
@@ -39,6 +42,12 @@ class Cart_controller extends MY_Controller {
 
 		redirect('candystore/storefront', 'refresh');
 
+    }
+
+    function checkout() {
+        $data['title'] = 'Checkout';
+        $data['main'] = 'store/checkout.php';
+        $this->load->view('utils/template.php',$data);
     }
 
 }

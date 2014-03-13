@@ -1,19 +1,35 @@
 <?php 
 
-		if (isset($_SESSION["items"])) {
-            $items = $_SESSION["items"];
-        }
+	if (!isset($_SESSION["items"])) {
+		echo "<p>You do not have any items in your cart.</p>";
+		echo "<p>" . anchor('candystore/storefront','Back to Store') . "</p>";
+    } else {
+    	$items = $_SESSION["items"];
 		foreach ($items as $item) {
 
 			echo "<table id='candyCell'>";
 			echo "<tr>";
-			echo "<td>" . $product->name . "</td>";
-			echo "</tr><tr>";
-			echo "<td><a href='" . base_url() . "candystore/candyDescription/" . $product->id . "'>\
-					<img src='" . base_url() . "images/product/" . $product->photo_url . 
-					"' width='100px' /></td>";
-			echo "</tr><tr>";
-			echo "<td>$" . $product->price . "</td>";
+			// echo "<td>" . $product->name . "</td>";
+			// echo "</tr><tr>";
+			// echo "<td><a href='" . base_url() . "candystore/candyDescription/" . $product->id . "'>
+			// 		<img src='" . base_url() . "images/product/" . $product->photo_url . 
+			// 		"' width='100px' /></td>";
+			// echo "</tr><tr>";
+			// echo "<td>$" . $product->price . "</td>";
+
+			// get info from database
+
+	echo form_open("cart_controller/update");
+	
+	echo form_label('Qty'); 
+	echo form_error('quantity');
+	echo form_input('quantity', $item->quantity, "required");
+
+	echo form_hidden('id', $item->product_id, "hidden");
+	echo form_submit('submit', 'Update quantity');
+
+	echo form_open("cart_controller/remove");
+	echo form_submit('submit', 'Remove from Cart');
 
 			echo "<td>Quantity: " . $item->quantity . "</td>";
 				
@@ -22,4 +38,8 @@
 			echo "</tr><td> </td><tr>";
 			echo "</table>";
 		}
+
+		// should probably be a button
+		//echo "<p>" . anchor('cart_controller/pay','Submit') . "</p>";
+	}
 ?>	 

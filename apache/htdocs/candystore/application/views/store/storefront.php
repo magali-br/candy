@@ -5,7 +5,7 @@
 			echo "<tr>";
 			echo "<td>" . $product->name . "</td>";
 			echo "</tr><tr>";
-			echo "<td><a href='" . base_url() . "candystore/candyDescription/" . $product->id . "'>\
+			echo "<td><a href='" . base_url() . "candystore/candyDescription/" . $product->id . "'>
 					<img src='" . base_url() . "images/product/" . $product->photo_url . 
 					"' width='100px' /></td>";
 			echo "</tr><tr>";
