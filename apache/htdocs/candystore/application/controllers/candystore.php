@@ -20,7 +20,6 @@ class CandyStore extends MY_Controller {
 
     function index() {
     	// Load the list of products by default
-    	//$this->productList();
     	$this->storefront();
 
     }
