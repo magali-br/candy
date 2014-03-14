@@ -43,10 +43,8 @@ class Customer_Controller extends MY_Controller {
             $customer->password = $this->input->get_post('password');
             $customer->email = $this->input->get_post('email');
 
-            // this does not work at the moment
             $this->customer_model->insert($customer);
 
-            //Then we redirect to the index page again
             redirect('candystore/productList', 'refresh');
         } else {
             $data['title'] = 'New Account';
@@ -74,15 +72,9 @@ class Customer_Controller extends MY_Controller {
                 if (strcmp($customer->password, $this->input->get_post('password')) == 0) {
                     $_SESSION["loggedIn"] = true;
                     $_SESSION["login"] = $login;
+                    $_SESSION["id"] = $customer->id;
                     $_SESSION["first"] = $customer->first;
-
-                } else if ( (strcmp($login, "admin") == 0) &&
-                    (strcmp($this->input->get_post('password'), "admin") == 0) ) {
-                	$_SESSION["loggedIn"] = true;
-                	$_SESSION["login"] = $login;
-                	$_SESSION["first"] = "Admin";
-                	
-                }
+                } 
 
             } else {
                 //error handling: no such customer
@@ -99,6 +91,7 @@ class Customer_Controller extends MY_Controller {
         $_SESSION["loggedIn"] = false;
         $_SESSION["login"] = NULL;
         $_SESSION["first"] = NULL;
+        $_SESSION["id"] = NULL;
         session_destroy();
         $_SESSION = array();
         redirect(base_url());

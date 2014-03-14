@@ -43,6 +43,10 @@ class Cart_controller extends MY_Controller {
         }
     }
 
+    function emptyCart() {
+        $_SESSION["items"] = array();
+    }
+
     function add() {
     	$this->load->library('form_validation');
 		$this->form_validation->set_rules('quantity','Quantity','required|is_natural_no_zero');
@@ -68,9 +72,6 @@ class Cart_controller extends MY_Controller {
                 $_SESSION["items"][] = $order_item;
             }
 
-            // if are adding more of the same kind of item, should add extra quantity to same order_item!
-
-			//redirect('candystore/storefront', 'refresh');
 		} else {
 			// Add errorrr handling code!!!!
 		}
@@ -96,10 +97,49 @@ class Cart_controller extends MY_Controller {
     function pay() {
         // verify credit card info
         // 
+        $order = new Order();
+        $today = getdate();
+        $time = $today["hours"] . ":" . $today["minutes"] . ":" . $today["seconds"];
+        $order->order_time = $time;
+
+        $date = $today["year"] . "-" . $today["mon"] . "-" . $today["mday"];
+        $order->order_date = $date;
+
+        $total = $this->input->get_post('total');
+        $order->total = $total;
+
+        if (isset($_SESSION["id"])) {
+            $order->customer_id = $_SESSION["id"];
+        } else {
+            //BAD, but this will not happen
+        }
+        $order->creditcard_number = $this->input->get_post('creditCard');
+        $order->creditcard_month = $this->input->get_post('expiryMonth');
+        $order->creditcard_year = $this->input->get_post('expiryYear');
+
+        $this->load->model('order_model');
+        $this->order_model->insert($order);
+        $order_id = $this->db->insert_id();
+
+        $this->load->model('order_item_model');
+        $this->buildCart();
+        foreach ($this->cart_items as $item) {
+            $order_item = new Order_item();
+            $order_item->order_id = $order_id;
+            $order_item->product_id = $item->product_id;
+            $order_item->quantity = $item->quantity;
+            $this->order_item_model->insert($order_item);
+        }
+
+        echo count($this->cart_items);
+
+        $this->emptyCart();
+        redirect('candystore/storefront', 'refresh');
+
         $data['title'] = 'Receipt';
         $data['main'] = 'store/receipt.php';
         $data["cart_items"] = $this->cart_items;
-        $this->load->view('utils/template.php',$data);
+        //$this->load->view('utils/template.php',$data);
     }
 
     function remove() {
