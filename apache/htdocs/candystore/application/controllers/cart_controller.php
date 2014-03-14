@@ -20,6 +20,10 @@ class Cart_controller extends MY_Controller {
     }
 
     function cart() {
+        if (isset($_SESSION['errmsg'])) {
+            $data['errmsg'] = $_SESSION['errmsg'];
+            unset($_SESSION['errmsg']);
+        }
     	$data['title'] = 'Your Cart';
         $data['main'] = 'store/cart.php';
         $this->buildCart();
@@ -86,9 +90,14 @@ class Cart_controller extends MY_Controller {
 
     function checkout() {
         if ($this->loggedIn()) {
+            $this->buildCart();
+            if (count($this->cart_items) == 0) {
+                $_SESSION["errmsg"] = "Your cart is empty!";
+                redirect('cart_controller/cart', 'refresh');
+            }
+
             $data['title'] = 'Checkout';
             $data['main'] = 'store/checkout.php';
-            $this->buildCart();
             $data["cart_items"] = $this->cart_items;
             $this->load->view('utils/template.php',$data);
         } else {
@@ -101,9 +110,10 @@ class Cart_controller extends MY_Controller {
     function pay() {
         $this->buildCart();
         if (count($this->cart_items) == 0) {
-            echo "<script type='text/javascript'>alert('Your cart is empty!');</script>";
+            $_SESSION["errmsg"] = "Your cart is empty!";
             redirect('cart_controller/cart', 'refresh');
         }
+
         // verify credit card info
         // 
         $order = new Order();
