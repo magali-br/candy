@@ -88,13 +88,18 @@ class Cart_controller extends MY_Controller {
             $data["cart_items"] = $this->cart_items;
             $this->load->view('utils/template.php',$data);
         } else {
-            echo "<script type='text/javascript'>alert('Please log in before checking out');</script>";
+            echo "<script type='text/javascript'>alert('Please log in before checking out!');</script>";
             redirect('customer_controller/loginForm', 'refresh');
         }
 
     }
 
     function pay() {
+        $this->buildCart();
+        if (count($this->cart_items) == 0) {
+            echo "<script type='text/javascript'>alert('Your cart is empty!');</script>";
+            redirect('cart_controller/cart', 'refresh');
+        }
         // verify credit card info
         // 
         $order = new Order();
@@ -122,7 +127,6 @@ class Cart_controller extends MY_Controller {
         $order_id = $this->db->insert_id();
 
         $this->load->model('order_item_model');
-        $this->buildCart();
         foreach ($this->cart_items as $item) {
             $order_item = new Order_item();
             $order_item->order_id = $order_id;
@@ -134,12 +138,21 @@ class Cart_controller extends MY_Controller {
         echo count($this->cart_items);
 
         $this->emptyCart();
-        redirect('candystore/storefront', 'refresh');
+        //redirect('candystore/storefront', 'refresh');
 
         $data['title'] = 'Receipt';
         $data['main'] = 'store/receipt.php';
-        $data["cart_items"] = $this->cart_items;
-        //$this->load->view('utils/template.php',$data);
+        $data['cart_items'] = $this->cart_items;
+        $data['order_id'] = $order_id;
+        $data['date'] = $date . " at " . $time;
+        $data['last_4_digits'] = $order->creditcard_number % 10000;
+        $data['payer_first'] = $this->input->get_post('first');
+        $data['payer_last'] = $this->input->get_post('last');
+        $data['subtotal'] = $this->input->get_post('subtotal');
+        $data['tax'] = $this->input->get_post('tax');
+        $data['shipping'] = $this->input->get_post('shipping');
+        $data['total'] = $this->input->get_post('total');
+        $this->load->view('utils/template.php',$data);
     }
 
     function remove() {

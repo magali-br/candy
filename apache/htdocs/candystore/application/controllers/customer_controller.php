@@ -74,6 +74,7 @@ class Customer_Controller extends MY_Controller {
                     $_SESSION["login"] = $login;
                     $_SESSION["id"] = $customer->id;
                     $_SESSION["first"] = $customer->first;
+                    $_SESSION["last"] = $customer->last;
                 } 
 
             } else {
@@ -82,7 +83,6 @@ class Customer_Controller extends MY_Controller {
 
         } else {
             // error handling
-           // redirect('candystore/index', 'refresh');
         }   
         redirect('candystore/index', 'refresh');
     }
