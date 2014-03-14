@@ -8,6 +8,10 @@ class Customer_Controller extends MY_Controller {
     }
 
     function loginForm() {
+        if (isset($_SESSION['errmsg'])) {
+            $data['errmsg'] = $_SESSION['errmsg'];
+            unset($_SESSION['errmsg']);
+        }
         $data['title'] = 'Login';
         $data['main'] = 'customer/loginForm.php';
         $this->load->view('utils/template.php',$data);
@@ -78,7 +82,9 @@ class Customer_Controller extends MY_Controller {
                 } 
 
             } else {
-                //error handling: no such customer
+
+                $_SESSION["errmsg"] = "Incorrect username or password. Please try again!";
+                redirect('customer_controller/loginForm', 'refresh');
             }
 
         }  

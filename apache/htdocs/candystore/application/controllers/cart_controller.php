@@ -107,6 +107,14 @@ class Cart_controller extends MY_Controller {
 
     }
 
+    public function creditcard_check($creditcard_number) {
+        if (preg_match("/\d{4}\d{4}\d{4}\d{4}/", $creditcard_number) == 0) {
+            $this->form_validation->set_message('creditcard_check', "The Credit Card number is invalid.");
+            return false;
+        }
+        return true;
+    }
+
     function pay() {
         $this->buildCart();
         if (count($this->cart_items) == 0) {
@@ -114,8 +122,13 @@ class Cart_controller extends MY_Controller {
             redirect('cart_controller/cart', 'refresh');
         }
 
-        // verify credit card info
-        // 
+        $this->load->library('form_validation');
+
+        if (!($this->form_validation->run())) {
+            $this->checkout();
+            return;
+        }
+
         $order = new Order();
         $today = getdate();
         $time = $today["hours"] . ":" . $today["minutes"] . ":" . $today["seconds"];

@@ -43,7 +43,34 @@ $config = array(
 						'field' => 'password',
 						'label' => 'Password',
 						'rules' => 'required'
+				)
+		),
+		'cart_controller/pay' => array(
+				array(
+						'field' => 'first',
+						'label' => 'First Name',
+						'rules' => 'required|alpha_numeric'
 				),
+				array(
+						'field' => 'last',
+						'label' => 'Last Name',
+						'rules' => 'required|alpha_numeric'
+				),
+				array(
+						'field' => 'creditCard',
+						'label' => 'Credit Card Number',
+						'rules' => 'required|is_natural_no_zero|callback_creditcard_check'
+				),
+				array(
+						'field' => 'expiryMonth',
+						'label' => 'Credit Card Expiry Month',
+						'rules' => 'required|is_natural_no_zero|less_than[13]'
+				),
+				array(
+						'field' => 'expiryYear',
+						'label' => 'Credit Card Expiry Month',
+						'rules' => 'required|is_natural_no_zero|less_than[31]'
+				)
 		)
 
 );

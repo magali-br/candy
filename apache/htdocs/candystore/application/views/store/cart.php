@@ -2,7 +2,7 @@
 
 	echo "<p>" . anchor('candystore/storefront','Back to Store') . "</p>";
 	if (isset($errmsg)) {
-		echo "<p>$errmsg</p>";
+		echo "<p><strong>$errmsg</strong></p>";
     } 
 
 	$total = 0;

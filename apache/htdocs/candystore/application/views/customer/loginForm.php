@@ -9,6 +9,10 @@
 <?php 
 	
 	echo "<p>" . anchor('customer_controller/createCustomerForm','Create New Account') . "</p>";
+	if (isset($errmsg)) {
+		echo "<p><strong>$errmsg</strong></p>";
+    } 
+
 	echo "<p>Login to access the Candy Store</p>";
 
 	echo validation_errors();

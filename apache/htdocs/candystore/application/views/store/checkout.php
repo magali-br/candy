@@ -70,7 +70,7 @@
 		// DO MORE VALIDATION
 		echo form_label('Credit Card Number'); 
 		echo form_error('creditCard');
-		echo form_input('creditCard', "", "required");
+		echo form_input('creditCard', set_value('creditCard'), "required");
 		echo "</tr><tr>";
 
 		echo form_label('Expiry Date'); 
