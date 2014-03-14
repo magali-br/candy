@@ -6,6 +6,8 @@
 	echo "<p> " . $product->description . "</p>";
 	echo "<p> $" . $product->price . "</p>";
 
+	echo validation_errors();
+
 	echo form_open("cart_controller/add");
 	
 	echo form_label('Qty'); 

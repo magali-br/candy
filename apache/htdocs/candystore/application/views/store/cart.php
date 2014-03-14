@@ -3,7 +3,6 @@
 	echo "<p>" . anchor('candystore/storefront','Back to Store') . "</p>";
 	if (!isset($_SESSION["items"])) {
 		echo "<p>You do not have any items in your cart.</p>";
-		echo "<p>" . anchor('candystore/storefront','Back to Store') . "</p>";
     } else {
 
     	$total = 0;

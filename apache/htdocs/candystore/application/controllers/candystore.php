@@ -65,7 +65,7 @@ class CandyStore extends MY_Controller {
 		$this->load->library('form_validation');
 		$this->form_validation->set_rules('name','Name','required|is_unique[product.name]');
 		$this->form_validation->set_rules('description','Description','required');
-		$this->form_validation->set_rules('price','Price','required');
+		$this->form_validation->set_rules('price','Price','required|greater_than[0]');
 		
 		$fileUploadSuccess = $this->upload->do_upload();
 		

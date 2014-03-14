@@ -52,7 +52,7 @@ class Cart_controller extends MY_Controller {
 		$this->form_validation->set_rules('quantity','Quantity','required|is_natural_no_zero');
 		$this->form_validation->set_rules('id','Id','required');
 		
-		 if ($this->form_validation->run() == true) {
+		 if ($this->form_validation->run()) {
 
             if (!isset($_SESSION["items"])) {
             	$_SESSION["items"] = array();
@@ -73,7 +73,11 @@ class Cart_controller extends MY_Controller {
             }
 
 		} else {
-			// Add errorrr handling code!!!!
+            // Add error
+
+            // Reload current page
+            $url = $_SERVER['HTTP_REFERER'];
+            redirect($url);
 		}
 
 		redirect('candystore/storefront', 'refresh');
