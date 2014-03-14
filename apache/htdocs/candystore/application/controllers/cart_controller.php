@@ -135,10 +135,10 @@ class Cart_controller extends MY_Controller {
             $this->order_item_model->insert($order_item);
         }
 
-        echo count($this->cart_items);
 
         $this->emptyCart();
-        //redirect('candystore/storefront', 'refresh');
+
+        $this->emailReceipt();
 
         $data['title'] = 'Receipt';
         $data['main'] = 'store/receipt.php';
@@ -174,6 +174,23 @@ class Cart_controller extends MY_Controller {
             $item->quantity = $quantity;
         }
         redirect('cart_controller/cart', 'refresh');
+    }
+
+    function emailReceipt() {
+        $this->load->library('email');
+
+        $this->email->from('the.wonderful.world.of.candy@gmail.com', 'The Wonderful World Of Candy');
+
+        if (isset($_SESSION["email"])) {
+            $this->email->to($_SESSION["email"]);
+        }
+
+        $this->email->subject('The Wonderful World Of Candy Purchase');
+        $this->email->message('<!DOCTYPE html><html><body><b>Testing</b> the email smtpppp.
+            <table><tr><td>yo</td></tr><tr><td>wheee</td></tr></table></body></html>');
+
+        $this->email->send();
+
     }
 
 }

@@ -45,7 +45,7 @@ class Customer_Controller extends MY_Controller {
 
             $this->customer_model->insert($customer);
 
-            redirect('candystore/productList', 'refresh');
+            redirect('candystore/storefront', 'refresh');
         } else {
             $data['title'] = 'New Account';
             $data['main'] = 'customer/createCustomerForm.php';
@@ -75,6 +75,7 @@ class Customer_Controller extends MY_Controller {
                     $_SESSION["id"] = $customer->id;
                     $_SESSION["first"] = $customer->first;
                     $_SESSION["last"] = $customer->last;
+                    $_SESSION["email"] = $customer->email;
                 } 
 
             } else {
@@ -88,10 +89,6 @@ class Customer_Controller extends MY_Controller {
     }
 
     function logout() {
-        $_SESSION["loggedIn"] = false;
-        $_SESSION["login"] = NULL;
-        $_SESSION["first"] = NULL;
-        $_SESSION["id"] = NULL;
         session_destroy();
         $_SESSION = array();
         redirect(base_url());
