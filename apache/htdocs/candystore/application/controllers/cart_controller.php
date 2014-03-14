@@ -124,6 +124,8 @@ class Cart_controller extends MY_Controller {
 
         $this->load->model('order_model');
         $this->order_model->insert($order);
+
+        // Get id of order just created
         $order_id = $this->db->insert_id();
 
         $this->load->model('order_item_model');

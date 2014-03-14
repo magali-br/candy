@@ -33,8 +33,8 @@
 	echo form_password('password',"", "required");
 	
 	echo form_label('Password Confirmation');
-	echo form_error('passConf');
-	echo form_password('passConf', "", "required");		
+	echo form_error('passconf');
+	echo form_password('passconf', "", "required");		
 	
 	echo form_submit('submit', 'Create Account');
 	echo form_close();

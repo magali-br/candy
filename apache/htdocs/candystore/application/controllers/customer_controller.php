@@ -20,18 +20,13 @@ class Customer_Controller extends MY_Controller {
     }
 
     function createCustomer() {
+
+        // have to load this helper????
+        //$this->load->helper('email');
+
+
+
     	$this->load->library('form_validation');
-
-		$this->form_validation->set_rules('firstName','First Name','required');
-		$this->form_validation->set_rules('lastName','Last Name','required');
-
-        $this->form_validation->set_rules('username','Username', 'required | min_length[5] | max_length[12] | is_unique[customer.username]'); 
-
-        $this->form_validation->set_rules('email','Email', 'required| valid_email | is_unique[customer.email]');
-        $this->form_validation->set_rules('password','Password','required | min_length[5]');
-        $this->form_validation->set_rules('passConf','Password Confirmation', 'required | matches[passConf]');
-
-        	//and much more validation!!! valid_email does not do anything at the moment
 
         if ($this->form_validation->run()) {
             $this->load->model('customer_model');
@@ -45,11 +40,15 @@ class Customer_Controller extends MY_Controller {
 
             $this->customer_model->insert($customer);
 
+            // Get id of customer just created
+            $customer_id = $this->db->insert_id();
+
+            $this->loginManually($customer->login, $customer_id, $customer->first, 
+                    $customer->last, $customer->email);
+
             redirect('candystore/storefront', 'refresh');
         } else {
-            $data['title'] = 'New Account';
-            $data['main'] = 'customer/createCustomerForm.php';
-            $this->load->view('utils/template.php',$data);
+            $this->createCustomerForm();
         }  
     }
 
@@ -76,6 +75,8 @@ class Customer_Controller extends MY_Controller {
                     $_SESSION["first"] = $customer->first;
                     $_SESSION["last"] = $customer->last;
                     $_SESSION["email"] = $customer->email;
+                    $this->loginManually($login, $customer->id, $customer->first, 
+                        $customer->last, $customer->email);
                 } 
 
             } else {
@@ -86,6 +87,21 @@ class Customer_Controller extends MY_Controller {
             // error handling
         }   
         redirect('candystore/index', 'refresh');
+    }
+
+    function loginManually($login, $id, $first, $last, $email) {
+
+        if (!isset($_SESSION)) {
+            $_SESSION = array();
+        }
+
+        $_SESSION["loggedIn"] = true;
+        $_SESSION["login"] = $login;
+        $_SESSION["id"] = $id;
+        $_SESSION["first"] = $first;
+        $_SESSION["last"] = $last;
+        $_SESSION["email"] = $email;
+
     }
 
     function logout() {
