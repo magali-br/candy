@@ -21,11 +21,6 @@ class Customer_Controller extends MY_Controller {
 
     function createCustomer() {
 
-        // have to load this helper????
-        //$this->load->helper('email');
-
-
-
     	$this->load->library('form_validation');
 
         if ($this->form_validation->run()) {
@@ -38,7 +33,10 @@ class Customer_Controller extends MY_Controller {
             $customer->password = $this->input->get_post('password');
             $customer->email = $this->input->get_post('email');
 
-            $this->customer_model->insert($customer);
+            if (!($this->customer_model->insert($customer))) {
+                $this->createCustomerForm();
+                //return;
+            }
 
             // Get id of customer just created
             $customer_id = $this->db->insert_id();
@@ -54,8 +52,6 @@ class Customer_Controller extends MY_Controller {
 
     function login() {
         $this->load->library('form_validation');
-        $this->form_validation->set_rules('username','Username', 'required');
-        $this->form_validation->set_rules('password','Password', 'required');
 
         if ($this->form_validation->run()) {
            $this->load->model('customer_model');
@@ -77,16 +73,16 @@ class Customer_Controller extends MY_Controller {
                     $_SESSION["email"] = $customer->email;
                     $this->loginManually($login, $customer->id, $customer->first, 
                         $customer->last, $customer->email);
+
+                    redirect('candystore/index', 'refresh');
                 } 
 
             } else {
                 //error handling: no such customer
             }
 
-        } else {
-            // error handling
-        }   
-        redirect('candystore/index', 'refresh');
+        }  
+        $this->loginForm();
     }
 
     function loginManually($login, $id, $first, $last, $email) {

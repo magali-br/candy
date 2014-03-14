@@ -15,8 +15,7 @@ $config = array(
 				array(
 						'field' => 'username',
 						'label' => 'Username',
-						'rules' => 'required|min_length[5]|max_length[12] 
-							| is_unique[customer.username]'
+						'rules' => 'required|min_length[5]|max_length[12]|is_unique[customer.login]'
 				),
 				array(
 						'field' => 'password',
@@ -31,9 +30,22 @@ $config = array(
 				array(
 						'field' => 'email',
 						'label' => 'Email',
-						'rules' => 'trim | required | valid_email | is_unique[customer.email]'
+						'rules' => 'trim|required|valid_email|is_unique[customer.email]'
 				)
+		),
+		'customer_controller/login' => array(
+				array(
+						'field' => 'username',
+						'label' => 'Username',
+						'rules' => 'required'
+				),
+				array(
+						'field' => 'password',
+						'label' => 'Password',
+						'rules' => 'required'
+				),
 		)
+
 );
 
 

@@ -1,4 +1,4 @@
-<!--
+
 function writeMTable() {
 	top.wRef=window.open('','myconsole',
 		'width=500,height=450,left=10,top=10'
