@@ -167,7 +167,6 @@ class Cart_controller extends MY_Controller {
 
         $this->emptyCart();
 
-        $this->emailReceipt();
 
         $data['title'] = 'Receipt';
         $data['main'] = 'store/receipt.php';
@@ -181,6 +180,25 @@ class Cart_controller extends MY_Controller {
         $data['tax'] = $this->input->get_post('tax');
         $data['shipping'] = $this->input->get_post('shipping');
         $data['total'] = $this->input->get_post('total');
+
+        $receipt = new Receipt_model();
+        $receipt->items = $this->cart_items;
+        $receipt->order_id = $order_id;
+        $receipt->date = $date . " at " . $time;
+        $receipt->last_4_digits = $order->creditcard_number % 10000;
+        $receipt->payer_first = $this->input->get_post('first');
+        $receipt->payer_last = $this->input->get_post('last');
+        $receipt->subtotal = $this->input->get_post('subtotal');
+        $receipt->tax = $this->input->get_post('tax');
+        $receipt->shipping = $this->input->get_post('shipping');
+        $receipt->total = $this->input->get_post('total');
+
+
+        $receipt_str = $this->buildReceiptString($receipt);
+        $data['receipt'] = $receipt_str;
+
+        $this->emailReceipt($receipt_str);
+
         $this->load->view('utils/template.php',$data);
     }
 
@@ -205,7 +223,83 @@ class Cart_controller extends MY_Controller {
         redirect('cart_controller/cart', 'refresh');
     }
 
-    function emailReceipt() {
+    function buildReceiptString($receipt) {
+        if (isset($_SESSION["first"])) {
+            $first = $_SESSION["first"];
+        } else {
+            $first = "";
+        }
+
+        if (isset($_SESSION["last"])) {
+            $last = $_SESSION["last"];
+        } else {
+            $last = "";
+        }
+
+        $receipt_str = '<html><head><title>Candy Invoice</title></head>'
+            .'<body onLoad="self.focus()">'
+            .'<font color=red><b><i>To print,
+             <a href=# onclick="window.print();return false;">click here</a> or press Ctrl+P</i></b></font>'
+            .'<H3>Candy Invoice</H3>'
+            .'<table border=0 cellspacing=3 cellpadding=3>'
+
+            . "<table id='left'><tr>"
+            . "<tr><th>Customer First Name:</th> <td>$first</td></tr>"
+            . "<tr><th>Customer Last Name:</th> <td>$last</td></tr>"
+
+            . "<tr><th>First Name on Credit Card:</th> <td>$receipt->payer_first</td></tr>"
+
+            . "<tr><th>Last Name on Credit Card:</th> <td>$receipt->payer_last</td></tr>"
+
+            . "<tr><th>Credit Card:</th> <td>xxxx-xxxx-xxxx-$receipt->last_4_digits</td></tr>"
+
+            . "<tr><th>Order Number:</th> <td>$receipt->order_id</td></tr>"
+
+
+            . "<tr><th>Date:</th> <td>$receipt->date</td></tr>"
+            . "</td></tr>"
+            . "</table>"
+
+
+            . "<tr><td><hr></td></tr>"
+
+
+            . "<table>"
+            . "<tr><th id='productNameWidth'>Product</th>
+                    <th id='productOtherCellWidth'>Product Id</th>
+                    <th id='productNameWidth'>Unit Price x Quantity</th>
+                    <th id='productOtherCellWidth'>Total</th>";
+
+        foreach ($receipt->items as $item) {
+            $receipt_str = $receipt_str . "<tr>"
+            . "<td id='productNameWidth'>" . $item->product->name . "</td>"
+            . "<td id='productOtherCellWidth'>" . $item->product->id . "</td>"
+            . "<td id='productOtherCellWidth'>$" 
+                    . $item->product->price . " x " . $item->quantity . "</td>";
+
+            $price = $item->product->price * $item->quantity;
+
+            $receipt_str = $receipt_str . "<td id='productOtherCellWidth'>$" . $price  . "</td>"
+            . "</tr>";
+        }
+
+        $receipt_str = $receipt_str . "</table>"
+
+        . "<table><tr>"
+        . "<tr><th>Subtotal:</th> <td id='left'>$$receipt->subtotal</td></tr>"
+
+        . "<tr><th>HST:</th> <td id='left'>$$receipt->tax</td></tr>"
+        . "<tr><th>Shipping and Handling:</th> <td id='left'>$$receipt->shipping</td></tr>"
+
+        . "<tr><td><hr></td><td><hr></td></tr>"
+        . "<tr><th>Total:</th> <td id='left'>$$receipt->total</td></tr>"
+        . "</td></tr>"
+        . "</table>" . '</body></html>';
+
+        return $receipt_str;
+    }
+
+    function emailReceipt($receipt_str) {
         $this->load->library('email');
 
         $this->email->from('the.wonderful.world.of.candy@gmail.com', 'The Wonderful World Of Candy');
@@ -215,8 +309,9 @@ class Cart_controller extends MY_Controller {
         }
 
         $this->email->subject('The Wonderful World Of Candy Purchase');
-        $this->email->message('<!DOCTYPE html><html><body><b>Testing</b> the email smtpppp.
-            <table><tr><td>yo</td></tr><tr><td>wheee</td></tr></table></body></html>');
+        // $this->email->message('<!DOCTYPE html><html><body><b>Testing</b> the email smtpppp.
+        //     <table><tr><td>yo</td></tr><tr><td>wheee</td></tr></table></body></html>');
+        $this->email->message($receipt_str);
 
         $this->email->send();
 
