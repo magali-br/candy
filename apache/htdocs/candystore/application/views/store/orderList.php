@@ -14,7 +14,7 @@
 			echo "<td>" . $order->id . "</td>";
 			echo "<td>" . $order->customer_id . "</td>";
 			echo "<td>" . $order->order_date . " at " . $order->order_time . "</td>";
-			echo "<td>" . $order->total . "</td>";
+			echo "<td>$" . $order->total . "</td>";
 			echo "<td>" . $order->creditcard_number . "</td>";
 			echo "<td>" . $order->creditcard_month . "/" . $order->creditcard_year . "</td>";
 				

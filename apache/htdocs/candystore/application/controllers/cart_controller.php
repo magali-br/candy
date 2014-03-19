@@ -244,55 +244,57 @@ class Cart_controller extends MY_Controller {
             .'<table border=0 cellspacing=3 cellpadding=3>'
 
             . "<table id='left'><tr>"
-            . "<tr><th>Customer First Name:</th> <td>$first</td></tr>"
-            . "<tr><th>Customer Last Name:</th> <td>$last</td></tr>"
+            . "<tr><th style='text-align:left'>Customer First Name:</th> <td>$first</td></tr>"
+            . "<tr><th style='text-align:left'>Customer Last Name:</th> <td>$last</td></tr>"
 
-            . "<tr><th>First Name on Credit Card:</th> <td>$receipt->payer_first</td></tr>"
+            . "<tr><th style='text-align:left'>First Name on Credit Card:</th> <td>$receipt->payer_first</td></tr>"
 
-            . "<tr><th>Last Name on Credit Card:</th> <td>$receipt->payer_last</td></tr>"
+            . "<tr><th style='text-align:left'>Last Name on Credit Card:</th> <td>$receipt->payer_last</td></tr>"
 
-            . "<tr><th>Credit Card:</th> <td>xxxx-xxxx-xxxx-$receipt->last_4_digits</td></tr>"
+            . "<tr><th style='text-align:left'>Credit Card:</th> <td>xxxx-xxxx-xxxx-$receipt->last_4_digits</td></tr>"
 
-            . "<tr><th>Order Number:</th> <td>$receipt->order_id</td></tr>"
+            . "<tr><th style='text-align:left'>Order Number:</th> <td>$receipt->order_id</td></tr>"
 
 
-            . "<tr><th>Date:</th> <td>$receipt->date</td></tr>"
+            . "<tr><th style='text-align:left'>Date:</th> <td>$receipt->date</td></tr>"
             . "</td></tr>"
             . "</table>"
 
-
+            . "<tr><td>  </td></tr>"
             . "<tr><td><hr></td></tr>"
 
 
             . "<table>"
-            . "<tr><th id='productNameWidth'>Product</th>
-                    <th id='productOtherCellWidth'>Product Id</th>
-                    <th id='productNameWidth'>Unit Price x Quantity</th>
-                    <th id='productOtherCellWidth'>Total</th>";
+            . "<tr><th style='text-align:left; width:400px'>Product</th>
+                    <th style='text-align:left; width:200px'>Product Id</th>
+                    <th style='text-align:left; width:400px'>Unit Price x Quantity</th>
+                    <th style='text-align:left; width:200px'>Total</th>";
 
         foreach ($receipt->items as $item) {
             $receipt_str = $receipt_str . "<tr>"
-            . "<td id='productNameWidth'>" . $item->product->name . "</td>"
-            . "<td id='productOtherCellWidth'>" . $item->product->id . "</td>"
-            . "<td id='productOtherCellWidth'>$" 
+            . "<td style='text-align:left; width:400px'>" . $item->product->name . "</td>"
+            . "<td style='text-align:left; width:200px'>" . $item->product->id . "</td>"
+            . "<td style='text-align:left; width:200px'>$" 
                     . $item->product->price . " x " . $item->quantity . "</td>";
 
             $price = $item->product->price * $item->quantity;
 
-            $receipt_str = $receipt_str . "<td id='productOtherCellWidth'>$" . $price  . "</td>"
+            $receipt_str = $receipt_str . "<td style='text-align:left; width:200px'>$" . $price  . "</td>"
             . "</tr>";
         }
 
         $receipt_str = $receipt_str . "</table>"
 
         . "<table><tr>"
-        . "<tr><th>Subtotal:</th> <td id='left'>$$receipt->subtotal</td></tr>"
+        . "<tr><td><hr></td></tr>"
+        . "<tr><td>  </td></tr>"
+        . "<tr><th>Subtotal:</th> <td style='text-align:left'>$$receipt->subtotal</td></tr>"
 
-        . "<tr><th>HST:</th> <td id='left'>$$receipt->tax</td></tr>"
-        . "<tr><th>Shipping and Handling:</th> <td id='left'>$$receipt->shipping</td></tr>"
+        . "<tr><th>HST:</th> <td style='text-align:left'>$$receipt->tax</td></tr>"
+        . "<tr><th>Shipping and Handling:</th> <td style='text-align:left'>$$receipt->shipping</td></tr>"
 
         . "<tr><td><hr></td><td><hr></td></tr>"
-        . "<tr><th>Total:</th> <td id='left'>$$receipt->total</td></tr>"
+        . "<tr><th>Total:</th> <td style='text-align:left'>$$receipt->total</td></tr>"
         . "</td></tr>"
         . "</table>" . '</body></html>';
 
@@ -309,8 +311,6 @@ class Cart_controller extends MY_Controller {
         }
 
         $this->email->subject('The Wonderful World Of Candy Purchase');
-        // $this->email->message('<!DOCTYPE html><html><body><b>Testing</b> the email smtpppp.
-        //     <table><tr><td>yo</td></tr><tr><td>wheee</td></tr></table></body></html>');
         $this->email->message($receipt_str);
 
         $this->email->send();

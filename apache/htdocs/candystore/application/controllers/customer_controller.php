@@ -8,7 +8,7 @@ class Customer_Controller extends MY_Controller {
     }
 
     function customerList() {
-        $data['title'] = 'The Wonderful World of Candy';
+        $data['title'] = 'Customer List';
         $data['main'] = 'customer/customerList.php';
         $this->load->model('customer_model');
         $customers = $this->customer_model->getAll();
