@@ -317,5 +317,24 @@ class Cart_controller extends MY_Controller {
 
     }
 
+
+    function orderList() {
+        $data['title'] = 'Order List';
+        $data['main'] = 'store/orderList.php';
+        $this->load->model('order_model');
+        $orders = $this->order_model->getAll();
+        $data['orders']=$orders;
+        $this->load->view('utils/template.php',$data);
+    }
+
+    function deleteOrder($id) {
+        $this->load->model('order_model');
+        
+        if (isset($id)) 
+            $this->order_model->delete($id);
+        
+        $this->orderList();
+    }
+
 }
 ?> 
