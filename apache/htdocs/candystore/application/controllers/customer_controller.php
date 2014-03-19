@@ -7,6 +7,15 @@ class Customer_Controller extends MY_Controller {
         parent::__construct();
     }
 
+    function customerList() {
+        $data['title'] = 'The Wonderful World of Candy';
+        $data['main'] = 'customer/customerList.php';
+        $this->load->model('customer_model');
+        $customers = $this->customer_model->getAll();
+        $data['customers']=$customers;
+        $this->load->view('utils/template.php',$data);
+    }
+
     function loginForm() {
         if (isset($_SESSION['errmsg'])) {
             $data['errmsg'] = $_SESSION['errmsg'];
@@ -52,6 +61,16 @@ class Customer_Controller extends MY_Controller {
         } else {
             $this->createCustomerForm();
         }  
+    }
+
+    function deleteCustomer($id) {
+        $this->load->model('customer_model');
+        
+        if (isset($id)) 
+            $this->customer_model->delete($id);
+        
+        $this->customerList();
+
     }
 
     function login() {

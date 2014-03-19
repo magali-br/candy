@@ -39,7 +39,9 @@
 				<img id='smallButton' src='" . base_url() . "images/icons/CandyLogout.png'/></a></p>";
 
 		if (isset($_SESSION["login"]) && (strcmp($_SESSION["login"], "admin") == 0)) {
-			echo "<p>" . anchor('candystore/productList','List of Products') . "</p>";
+			echo "<p>" . anchor('candystore/productList','List Products') . "</p>";
+			echo "<p>" . anchor('customer_controller/customerList','List Customers') . "</p>";
+			echo "<p>" . anchor('cart_controller/orderList','List Orders') . "</p>";
 		}
 
 	}
