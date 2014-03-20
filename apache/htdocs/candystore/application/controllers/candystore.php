@@ -25,6 +25,11 @@ class CandyStore extends MY_Controller {
     }
 
     function productList() {
+    	if (!($this->isAdmin())) {
+			redirect('candystore/index', 'refresh');
+			return;
+		}
+		
     	$data['title'] = 'The Wonderful World of Candy';
     	$data['main'] = 'product/list.php';
     	$this->load->model('product_model');
@@ -56,12 +61,22 @@ class CandyStore extends MY_Controller {
 
     
     function newForm() {
+    	if (!($this->isAdmin())) {
+			redirect('candystore/index', 'refresh');
+			return;
+		}
+
     	$data['title'] = 'New Product';
     	$data['main'] = 'product/newForm.php';
 	    $this->load->view('utils/template.php',$data);
     }
     
 	function create() {
+		if (!($this->isAdmin())) {
+			redirect('candystore/index', 'refresh');
+			return;
+		}
+
 		$this->load->library('form_validation');
 		$this->form_validation->set_rules('name','Name','required|is_unique[product.name]');
 		$this->form_validation->set_rules('description','Description','required');
@@ -100,18 +115,9 @@ class CandyStore extends MY_Controller {
 	
 	function read($id) {
 
-		// The following piece must be added to every administrator-secret page
-		// Secret product list, viewing/editing item/ etc...
-		// Must decide where to redirect to - login page, or error page "unauthorized"?
-		if ($this->loggedIn()) {
-			if (!($this->isAdmin())) {
-				// print error saying must be Administrator to access page
-				redirect('candystore/index', 'refresh');
-				return;
-			}
-		} else {
-			//pass data, print error saying must log in
-			redirect('customer_controller/loginForm', 'refresh');
+		if (!($this->isAdmin())) {
+			redirect('candystore/index', 'refresh');
+			return;
 		}
 
 		$this->load->model('product_model');
@@ -124,6 +130,11 @@ class CandyStore extends MY_Controller {
 	}
 	
 	function editForm($id) {
+		if (!($this->isAdmin())) {
+			redirect('candystore/index', 'refresh');
+			return;
+		}
+
 		$this->load->model('product_model');
 		$product = $this->product_model->get($id);
 		$data['product']=$product;
@@ -134,6 +145,11 @@ class CandyStore extends MY_Controller {
 	}
 	
 	function update($id) {
+		if (!($this->isAdmin())) {
+			redirect('candystore/index', 'refresh');
+			return;
+		}
+
 		$this->load->library('form_validation');
 		$this->form_validation->set_rules('name','Name','required');
 		$this->form_validation->set_rules('description','Description','required');
@@ -165,6 +181,11 @@ class CandyStore extends MY_Controller {
 	}
     	
 	function delete($id) {
+		if (!($this->isAdmin())) {
+			redirect('candystore/index', 'refresh');
+			return;
+		}
+
 		$this->load->model('product_model');
 		
 		if (isset($id)) 

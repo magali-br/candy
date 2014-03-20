@@ -8,6 +8,10 @@ class Customer_Controller extends MY_Controller {
     }
 
     function customerList() {
+        if (!($this->isAdmin())) {
+            redirect('candystore/index', 'refresh');
+            return;
+        }
         $data['title'] = 'Customer List';
         $data['main'] = 'customer/customerList.php';
         $this->load->model('customer_model');
@@ -63,6 +67,10 @@ class Customer_Controller extends MY_Controller {
     }
 
     function deleteCustomer($id) {
+        if (!($this->isAdmin())) {
+            redirect('candystore/index', 'refresh');
+            return;
+        }
         $this->load->model('customer_model');
         
         if (isset($id)) 

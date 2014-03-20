@@ -254,8 +254,8 @@ class Cart_controller extends MY_Controller {
 
         $receipt_str = '<html><head><title>Candy Invoice</title></head>'
             .'<body onLoad="self.focus()">'
-            .'<font color=red><b><i>To print,
-             <a href=# onclick="window.print();return false;">click here</a> or press Ctrl+P</i></b></font>'
+            .'<font color=red><b>
+             <a href=# onclick="window.print();return false;">Print Receipt</a></b></font>'
             .'<H3>Candy Invoice</H3>'
             .'<table border=0 cellspacing=3 cellpadding=3>'
 
@@ -335,6 +335,10 @@ class Cart_controller extends MY_Controller {
 
 
     function orderList() {
+        if (!($this->isAdmin())) {
+            redirect('candystore/index', 'refresh');
+            return;
+        }
         $data['title'] = 'Order List';
         $data['main'] = 'store/orderList.php';
         $this->load->model('order_model');
@@ -344,6 +348,10 @@ class Cart_controller extends MY_Controller {
     }
 
     function deleteOrder($id) {
+        if (!($this->isAdmin())) {
+            redirect('candystore/index', 'refresh');
+            return;
+        }
         $this->load->model('order_model');
         
         if (isset($id)) 
