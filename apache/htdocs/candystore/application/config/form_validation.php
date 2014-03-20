@@ -25,7 +25,7 @@ $config = array(
 				array(
 						'field' => 'passconf',
 						'label' => 'Password Confirmation',
-						'rules' => 'required|min_length[4]|matches[password]'
+						'rules' => 'required|min_length[6]|matches[password]'
 				),
 				array(
 						'field' => 'email',
