@@ -1,10 +1,5 @@
 
- <h2>Login</h2>
-
-<style>
-	input { display: block;}
-	
-</style>
+ <h1>Login</h1>
 
 <?php 
 	

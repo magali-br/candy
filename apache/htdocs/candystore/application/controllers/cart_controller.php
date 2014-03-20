@@ -222,19 +222,31 @@ class Cart_controller extends MY_Controller {
         $id = $this->input->get_post('id');
         $item = $this->productInArray($id);
         if ($item) {
-            $index = array_search($item, $_SESSION["items"]);
-
-            array_splice($_SESSION["items"], $index, 1);
+            $this->removeItem($item);
         }
         redirect('cart_controller/cart', 'refresh');
     }
 
+    function removeItem($item) {
+        $index = array_search($item, $_SESSION["items"]);
+        array_splice($_SESSION["items"], $index, 1);
+    }
+
     function updateQty() {
+        $this->load->library('form_validation');
+        if (!($this->form_validation->run())) {
+            $this->cart();
+            return;
+        }
         $id = $this->input->get_post('id');
         $quantity = $this->input->get_post('quantity');
         $item = $this->productInArray($id);
         if ($item) {
-            $item->quantity = $quantity;
+            if ($quantity == 0) {
+                $this->removeItem($item);
+            } else {
+                $item->quantity = $quantity;
+            }
         }
         redirect('cart_controller/cart', 'refresh');
     }

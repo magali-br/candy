@@ -71,6 +71,13 @@ $config = array(
 						'label' => 'Credit Card Expiry Year',
 						'rules' => 'required|is_natural_no_zero|exact_length[2]'
 				)
+		),
+		'cart_controller/updateQty' => array(
+				array(
+						'field' => 'quantity',
+						'label' => 'Quantity',
+						'rules' => 'required|is_natural'
+				)
 		)
 
 );

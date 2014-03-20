@@ -3,7 +3,7 @@
 <head>
 	<script src='http://code.jquery.com/jquery-latest.js'></script>
 	<script>
-		function checkCreditCard() {
+		function checkCreditCard(input) {
 			var number = $("#creditCard");
 
 			if (/^\d{16})$/.test(number)) {
@@ -15,12 +15,13 @@
 			}
 		}
 
-		function checkExpiryDate() {
+		function checkExpiryDate(input) {
 			var month = $("#expiryMonth");
 			var year = $("#expiryYear");
 
 			if (!/^\d{2})$/.test(month)) {
-				month.get(0).setCustomValidity("The Credit Card Expiry Month is invalid.");
+				input.setCustomValidity("The Credit Card Expiry Month is invalid.");
+				//month.get(0).setCustomValidity("The Credit Card Expiry Month is invalid.");
 				return false;
 			}
 
@@ -33,12 +34,15 @@
 			year = parseInt(year);
 
 			if (month > 12 || month < 1) {
-				month.get(0).setCustomValidity("The Credit Card Expiry Month is invalid.");
+				input.setCustomValidity("The Credit Card Expiry Month is invalid wheeeeeee.");
+				//month.get(0).setCustomValidity("The Credit Card Expiry Month is invalid wheeeeeee.");
 				return false;
 			}
 
 			month.get(0).setCustomValidity("");
 			year.get(0).setCustomValidity("");
+
+			($("#expiryDateError")).innerHTML = input.checkValidity();
 
 
 		}
@@ -126,14 +130,17 @@
 
 		echo form_label('Credit Card Number'); 
 		echo form_error('creditCard');
-		echo form_input('creditCard', set_value('creditCard'), "required id='creditCard' oninput='checkCreditCard'");
+		echo form_input('creditCard', set_value('creditCard'), "required id='creditCard' oninput='checkCreditCard(this)'");
 		echo "</tr><tr>";
 
+		echo "<div id='expiryDateError'></div>";
 		echo form_label('Expiry Date'); 
 		echo form_error('expiryMonth');
-		echo form_input('expiryMonth', "mm", "required class='mediumInput' id='expiryMonth'") . 
-				" / " . form_error('expiryYear') . 
-				form_input('expiryYear', "yy", "required class='mediumInput' id='expiryYear' oninput='checkExpiryDate'");
+		echo form_error('expiryYear');
+		echo form_input('expiryMonth', set_value('expiryMonth') ? set_value('expiryMonth') : "mm", 
+							"required class='mediumInput' id='expiryMonth'") . 
+				" / " . form_input('expiryYear', set_value('expiryYear') ? set_value('expiryYear') : "yy", 
+							"required class='mediumInput' id='expiryYear' oninput='checkExpiryDate(this)'");
 		echo "</tr></table>";
 
 		echo form_hidden('subtotal', $total, "hidden");
