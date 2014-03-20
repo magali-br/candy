@@ -105,3 +105,11 @@
 #mediumInput {
     width: 30px;
  }
+
+ .mediumInput {
+    width: 30px;
+ }
+
+ #errmsg {
+    color:red;
+ }

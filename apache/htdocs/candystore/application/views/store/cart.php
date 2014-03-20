@@ -1,9 +1,11 @@
+
+<h1> Cart </h1>
 <?php 
 
 	echo "<p>" . anchor('candystore/storefront','Back to Store') . "</p>";
-	if (isset($errmsg)) {
-		echo "<p><strong>$errmsg</strong></p>";
-    } 
+	// if (isset($errmsg)) {
+	// 	echo "<p><strong>$errmsg</strong></p>";
+ //    } 
 
 	$total = 0;
 

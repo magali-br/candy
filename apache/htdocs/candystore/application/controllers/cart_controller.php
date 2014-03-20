@@ -96,9 +96,15 @@ class Cart_controller extends MY_Controller {
                 redirect('cart_controller/cart', 'refresh');
             }
 
+            if (isset($_SESSION['errmsg'])) {
+                $data['errmsg'] = $_SESSION['errmsg'];
+                unset($_SESSION['errmsg']);
+            }
+
             $data['title'] = 'Checkout';
             $data['main'] = 'store/checkout.php';
-            $data["cart_items"] = $this->cart_items;
+            $this->buildCart();
+            $data['cart_items'] = $this->cart_items;
             $this->load->view('utils/template.php',$data);
         } else {
             echo "<script type='text/javascript'>alert('Please log in before checking out!');</script>";
@@ -107,13 +113,7 @@ class Cart_controller extends MY_Controller {
 
     }
 
-    public function creditcard_check($creditcard_number) {
-        if (preg_match("/\d{4}\d{4}\d{4}\d{4}/", $creditcard_number) == 0) {
-            $this->form_validation->set_message('creditcard_check', "The Credit Card number is invalid.");
-            return false;
-        }
-        return true;
-    }
+
 
     function pay() {
         $this->buildCart();
@@ -129,8 +129,24 @@ class Cart_controller extends MY_Controller {
             return;
         }
 
-        $order = new Order();
+        $creditcard_month = $this->input->get_post('expiryMonth');
+        $creditcard_year = $this->input->get_post('expiryYear');
         $today = getdate();
+        $expired = false;
+        if (intval($creditcard_year) < (intval($today["year"]) % 2000)) {
+            $expired = true;
+        } else if (intval($creditcard_month) < intval($today["mon"])) {
+            $expired = true;
+        }
+
+        if ($expired) {
+            $_SESSION["errmsg"] = "The credit card has expired!";
+            $this->checkout();
+            return;
+        }
+
+
+        $order = new Order();
         $time = $today["hours"] . ":" . $today["minutes"] . ":" . $today["seconds"];
         $order->order_time = $time;
 
@@ -143,11 +159,11 @@ class Cart_controller extends MY_Controller {
         if (isset($_SESSION["id"])) {
             $order->customer_id = $_SESSION["id"];
         } else {
-            //BAD, but this will not happen
+
         }
         $order->creditcard_number = $this->input->get_post('creditCard');
-        $order->creditcard_month = $this->input->get_post('expiryMonth');
-        $order->creditcard_year = $this->input->get_post('expiryYear');
+        $order->creditcard_month = $creditcard_month;
+        $order->creditcard_year = $creditcard_year;
 
         $this->load->model('order_model');
         $this->order_model->insert($order);

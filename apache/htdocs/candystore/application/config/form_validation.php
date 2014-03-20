@@ -5,22 +5,22 @@ $config = array(
 				array(
 						'field' => 'firstName',
 						'label' => 'First Name',
-						'rules' => 'required'
+						'rules' => 'required|max_length[24]'
 				),
 				array(
 						'field' => 'lastName',
 						'label' => 'Last Name',
-						'rules' => 'required'
+						'rules' => 'required|max_length[24]'
 				),
 				array(
 						'field' => 'username',
 						'label' => 'Username',
-						'rules' => 'required|min_length[5]|max_length[12]|is_unique[customer.login]'
+						'rules' => 'required|min_length[5]|max_length[16]|is_unique[customer.login]'
 				),
 				array(
 						'field' => 'password',
 						'label' => 'Password',
-						'rules' => 'required|min_length[4]'
+						'rules' => 'required|min_length[6]'
 				),
 				array(
 						'field' => 'passconf',
@@ -30,7 +30,7 @@ $config = array(
 				array(
 						'field' => 'email',
 						'label' => 'Email',
-						'rules' => 'trim|required|valid_email|is_unique[customer.email]'
+						'rules' => 'trim|max_length[45]|required|valid_email|is_unique[customer.email]'
 				)
 		),
 		'customer_controller/login' => array(
@@ -59,17 +59,17 @@ $config = array(
 				array(
 						'field' => 'creditCard',
 						'label' => 'Credit Card Number',
-						'rules' => 'required|is_natural_no_zero|callback_creditcard_check'
+						'rules' => 'required|is_natural_no_zero|exact_length[16]'
 				),
 				array(
 						'field' => 'expiryMonth',
 						'label' => 'Credit Card Expiry Month',
-						'rules' => 'required|is_natural_no_zero|less_than[13]'
+						'rules' => 'required|is_natural_no_zero|less_than[13]|exact_length[2]'
 				),
 				array(
 						'field' => 'expiryYear',
-						'label' => 'Credit Card Expiry Month',
-						'rules' => 'required|is_natural_no_zero|less_than[31]'
+						'label' => 'Credit Card Expiry Year',
+						'rules' => 'required|is_natural_no_zero|exact_length[2]'
 				)
 		)
 

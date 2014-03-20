@@ -48,7 +48,6 @@ class Customer_Controller extends MY_Controller {
 
             if (!($this->customer_model->insert($customer))) {
                 $this->createCustomerForm();
-                //return;
             }
 
             // Get id of customer just created

@@ -1,9 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src='http://code.jquery.com/jquery-latest.js'></script>
+	<script>
+		function checkCreditCard() {
+			var number = $("#creditCard");
+
+			if (/^\d{16})$/.test(number)) {
+				number.get(0).setCustomValidity("");
+				return true;
+			} else {
+				number.get(0).setCustomValidity("The Credit Card Number is invalid.");
+				return false;
+			}
+		}
+
+		function checkExpiryDate() {
+			var month = $("#expiryMonth");
+			var year = $("#expiryYear");
+
+			if (!/^\d{2})$/.test(month)) {
+				month.get(0).setCustomValidity("The Credit Card Expiry Month is invalid.");
+				return false;
+			}
+
+			if (/^\d{2})$/.test(year)) {
+				year.get(0).setCustomValidity("The Credit Card Expiry Year is invalid.");
+				return false;
+			}
+
+			month = parseInt(month);
+			year = parseInt(year);
+
+			if (month > 12 || month < 1) {
+				month.get(0).setCustomValidity("The Credit Card Expiry Month is invalid.");
+				return false;
+			}
+
+			month.get(0).setCustomValidity("");
+			year.get(0).setCustomValidity("");
+
+
+		}
+
+	 </script>
+
+</head>
+
+<body>
+<h1> Checkout </h1>
+
 <?php 
 	echo "<p>" . anchor('cart_controller/cart','Back to Cart') . "</p>";
 	if (!isset($_SESSION["items"])) {
 		echo "<p>You do not have any items in your cart.</p>";
 		echo "<p>" . anchor('candystore/storefront','Back to Store') . "</p>";
     } else {
+
+    	if (isset($errmsg)) {
+			echo "<p id='errmsg'><strong>$errmsg</strong></p>";
+    	} 
 
     	$total = 0;
 
@@ -41,7 +97,8 @@
 		echo "<table id='right'><tr>";
 		echo "<tr><th>Subtotal:</th> <td id='left'>$$total</td></tr>";
 
-		$tax = $total * 0.13;
+		$tax_unrounded = $total * 0.13;
+		$tax = number_format((float)$tax_unrounded, 2, '.', '');
 		echo "<tr><th>HST:</th> <td id='left'>$$tax</td></tr>";
 
 		$shipping = 5;
@@ -53,6 +110,7 @@
 		echo "</td></tr>";
 		echo "</table>";
 
+		echo validation_errors();
 		echo "<table><tr>";
 		echo form_open("cart_controller/pay");
 
@@ -66,18 +124,16 @@
 		echo form_input('last',set_value('last'), "required");
 		echo "</tr><tr>";
 
-
-		// DO MORE VALIDATION
 		echo form_label('Credit Card Number'); 
 		echo form_error('creditCard');
-		echo form_input('creditCard', set_value('creditCard'), "required");
+		echo form_input('creditCard', set_value('creditCard'), "required id='creditCard' oninput='checkCreditCard'");
 		echo "</tr><tr>";
 
 		echo form_label('Expiry Date'); 
 		echo form_error('expiryMonth');
-		echo form_input('expiryMonth', "mm", "required id='mediumInput'") . 
+		echo form_input('expiryMonth', "mm", "required class='mediumInput' id='expiryMonth'") . 
 				" / " . form_error('expiryYear') . 
-				form_input('expiryYear', "yy", "required id='mediumInput'");
+				form_input('expiryYear', "yy", "required class='mediumInput' id='expiryYear' oninput='checkExpiryDate'");
 		echo "</tr></table>";
 
 		echo form_hidden('subtotal', $total, "hidden");
@@ -88,3 +144,6 @@
 		echo form_close();
 	}
 ?>	
+
+</body>
+</html>
