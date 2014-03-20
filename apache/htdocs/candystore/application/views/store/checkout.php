@@ -3,46 +3,50 @@
 <head>
 	<script src='http://code.jquery.com/jquery-latest.js'></script>
 	<script>
-		function checkCreditCard(input) {
+		function checkCreditCard() {
 			var number = $("#creditCard");
 
-			if (/^\d{16})$/.test(number)) {
+			if (/^\d{16})$/.test(number.val())) {
 				number.get(0).setCustomValidity("");
 				return true;
 			} else {
 				number.get(0).setCustomValidity("The Credit Card Number is invalid.");
 				return false;
 			}
+
+			($("#creditCardError")).innerHTML = number.get(0).checkValidity();
 		}
 
-		function checkExpiryDate(input) {
+		function checkExpiryDate() {
 			var month = $("#expiryMonth");
 			var year = $("#expiryYear");
 
-			if (!/^\d{2})$/.test(month)) {
-				input.setCustomValidity("The Credit Card Expiry Month is invalid.");
-				//month.get(0).setCustomValidity("The Credit Card Expiry Month is invalid.");
+			var monthVal = month.val();
+			var yearVal = year.val();
+
+			if (!/^\d{2})$/.test(monthVal)) {
+				month.get(0).setCustomValidity("The Credit Card Expiry Month is invalid.");
 				return false;
 			}
 
-			if (/^\d{2})$/.test(year)) {
+			if (!/^\d{2})$/.test(yearVal)) {
 				year.get(0).setCustomValidity("The Credit Card Expiry Year is invalid.");
 				return false;
 			}
 
-			month = parseInt(month);
-			year = parseInt(year);
+			month = parseInt(monthVal);
+			year = parseInt(yearVal);
 
-			if (month > 12 || month < 1) {
-				input.setCustomValidity("The Credit Card Expiry Month is invalid wheeeeeee.");
-				//month.get(0).setCustomValidity("The Credit Card Expiry Month is invalid wheeeeeee.");
+			if (monthVal > 12 || monthVal < 1) {
+				month.get(0).setCustomValidity("The Credit Card Expiry Month is invalid.");
 				return false;
 			}
 
 			month.get(0).setCustomValidity("");
 			year.get(0).setCustomValidity("");
+			return true;
 
-			($("#expiryDateError")).innerHTML = input.checkValidity();
+			//($("#expiryDateError")).innerHTML = month.get(0).checkValidity() + " " + year.get(0).checkValidity();
 
 
 		}
@@ -128,9 +132,10 @@
 		echo form_input('last',set_value('last'), "required");
 		echo "</tr><tr>";
 
+		echo "<div id='creditCardError'></div>";
 		echo form_label('Credit Card Number'); 
 		echo form_error('creditCard');
-		echo form_input('creditCard', set_value('creditCard'), "required id='creditCard' oninput='checkCreditCard(this)'");
+		echo form_input('creditCard', set_value('creditCard'), "required id='creditCard' oninput='checkCreditCard()'");
 		echo "</tr><tr>";
 
 		echo "<div id='expiryDateError'></div>";
@@ -140,7 +145,7 @@
 		echo form_input('expiryMonth', set_value('expiryMonth') ? set_value('expiryMonth') : "mm", 
 							"required class='mediumInput' id='expiryMonth'") . 
 				" / " . form_input('expiryYear', set_value('expiryYear') ? set_value('expiryYear') : "yy", 
-							"required class='mediumInput' id='expiryYear' oninput='checkExpiryDate(this)'");
+							"required class='mediumInput' id='expiryYear' oninput='checkExpiryDate()'");
 		echo "</tr></table>";
 
 		echo form_hidden('subtotal', $total, "hidden");
