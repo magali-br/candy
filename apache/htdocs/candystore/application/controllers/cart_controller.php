@@ -135,7 +135,8 @@ class Cart_controller extends MY_Controller {
         $expired = false;
         if (intval($creditcard_year) < (intval($today["year"]) % 2000)) {
             $expired = true;
-        } else if (intval($creditcard_month) < intval($today["mon"])) {
+        } else if ((intval($creditcard_year) == (intval($today["year"]) % 2000))
+            && (intval($creditcard_month) < intval($today["mon"]))) {
             $expired = true;
         }
 
